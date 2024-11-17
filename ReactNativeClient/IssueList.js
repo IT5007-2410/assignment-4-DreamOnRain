@@ -101,7 +101,7 @@ function IssueRow(props) {
       {/****** Q2: Start Coding here. Add Logic to render a row  ******/}
       <View style={styles.table}>
         {row.map((data, index) => (
-            <Text style={[styles.cell, { width: width[index] }]}>{data}</Text>
+            <Text key={index} style={[styles.cell, { width: width[index] }]}>{data}</Text>
         ))}
       </View>
       {/****** Q2: Coding Ends here. ******/}
@@ -137,7 +137,7 @@ function IssueRow(props) {
         <View>
           <View style={styles.table}>
             {header.map((headerText, index) => (
-              <Text style={[styles.cell, { width: width[index] }]}>{headerText}</Text>
+              <Text key={headerText} style={[styles.cell, { width: width[index] }]}>{headerText}</Text>
             ))}
           </View>
           {issueRows}
