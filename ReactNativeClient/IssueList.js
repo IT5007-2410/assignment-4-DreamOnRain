@@ -57,7 +57,7 @@ class IssueFilter extends React.Component {
       return (
         <>
         {/****** Q1: Start Coding here. ******/}
-        <Text style={styles.headerText}>This is IssueFilter</Text>
+        <Text style={styles.headerText}>This is IssueFilter Dummy Component</Text>
         {/****** Q1: Code ends here ******/}
         </>
       );
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   });
 
 //const width= [40,80,80,80,80,80,200];
-const width = [40, 200, 80, 80, 80, 50, 80];
+const width = [50, 250, 80, 80, 80, 50, 80];
 
 function IssueRow(props) {
     const issue = props.issue;
@@ -179,7 +179,7 @@ function IssueRow(props) {
         const issue = {
           title: title,
           status: status,
-          owner: owner || 'New',
+          owner: owner,
           effort: effort ? parseInt(effort, 10) : null,
           due: due,
         };
