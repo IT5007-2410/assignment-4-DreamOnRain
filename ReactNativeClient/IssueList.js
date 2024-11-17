@@ -12,6 +12,7 @@ import {
     useColorScheme,
     View,
     TouchableOpacity,
+    Alert,
   } from 'react-native';
 
 import {Picker} from '@react-native-picker/picker';
@@ -56,7 +57,7 @@ class IssueFilter extends React.Component {
       return (
         <>
         {/****** Q1: Start Coding here. ******/}
-        <Text>This is IssueFilter</Text>
+        <Text style={styles.headerText}>This is IssueFilter</Text>
         {/****** Q1: Code ends here ******/}
         </>
       );
@@ -64,15 +65,15 @@ class IssueFilter extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingTop: 30, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#fff' },
   header: { height: 50, backgroundColor: 'black' },
   headerText: { paddingTop: 10, justifyContent: 'space-around', textAlign: 'center', color: '#35ABF0', color: '#35ABF0', fontSize: 20, fontWeight: 'bold'},
   text: { textAlign: 'center', color: 'white' },
   dataWrapper: { marginTop: -1 },
-  row: { backgroundColor: '#35ABF0' },
-  cell: { justifyContent: 'space-around', alignItems: 'center', textAlign: 'center', color: 'white', borderWidth: 1, borderColor: 'blue' },
+  scroller: { flexDirection: 'row', alignContent: 'center', width: '100%'},
   nav: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'},
-  table: { justifyContent: 'space-around', backgroundColor: '#35ABF0', flexDirection: 'row', textAlign: 'center' },
+  table: { textAlign: 'center', justifyContent: 'space-around', backgroundColor: '#35ABF0', flexDirection: 'row' },
+  cell: { justifyContent: 'space-around', alignItems: 'center', textAlign: 'center', color: 'white', borderWidth: 1, borderColor: 'grey', paddingTop: 5 },
   formText: { justifyContent: 'space-around', width: 100, textAlign: 'center', color: '#35ABF0', fontSize: 20, fontWeight: 'bold', marginRight: 10},
   form: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
   input: { height: 40, width: 200, borderColor: 'gray', borderWidth: 1, borderRadius: 5, paddingLeft: 8, marginVertical: 5 },
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
   });
 
 //const width= [40,80,80,80,80,80,200];
-const width = [40, 200, 80, 80, 80, 80, 80];
+const width = [40, 200, 80, 80, 80, 50, 80];
 
 function IssueRow(props) {
     const issue = props.issue;
@@ -90,9 +91,9 @@ function IssueRow(props) {
       issue.title,
       issue.status,
       issue.owner,
-      issue.created.toDateString(),
+      issue.created.toLocaleDateString('en-CA'),
       issue.effort,
-      issue.due ? new Date(issue.due).toDateString() : '',
+      issue.due ? new Date(issue.due).toLocaleDateString('en-CA') : '',
     ]
     {/****** Q2: Coding Ends here.******/}
     return (
@@ -128,9 +129,11 @@ function IssueRow(props) {
     
     
     return (
+    <>
+    <Text style={styles.headerText}>Issue Table</Text>
     <View style={styles.container}>
     {/****** Q2: Start Coding here to render the table header/rows.**********/}
-      <ScrollView horizontal={true}>
+      <ScrollView horizontal={true} style={styles.scroller}>
         <View>
           <View style={styles.table}>
             {header.map((headerText, index) => (
@@ -142,6 +145,7 @@ function IssueRow(props) {
       </ScrollView>
     {/****** Q2: Coding Ends here. ******/}
     </View>
+    </>
     );
   }
 
@@ -163,6 +167,9 @@ function IssueRow(props) {
     }
   
     /****** Q3: Start Coding here. Add functions to hold/set state input based on changes in TextInput******/
+    handleInputChange = (field, value) => {
+        this.setState({ [field]: value });
+    };
     /****** Q3: Code Ends here. ******/
 
     handleSubmit() {
@@ -185,6 +192,8 @@ function IssueRow(props) {
           effort: null,
           due: null,
         });
+
+        Alert.alert("Add Success.");
       /****** Q3: Code Ends here. ******/
     }
 
@@ -193,13 +202,13 @@ function IssueRow(props) {
           <View>
           {/****** Q3: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit.*******/}
           <View>
-        <Text style={styles.headerText}>Add a new Issue</Text>
+        <Text style={styles.headerText}>Add a New Issue</Text>
         <View style={styles.form}>
         <Text style={styles.formText}>Title</Text>
         <TextInput
           style={styles.input}
           value={this.state.title}
-          onChangeText={(text) => this.setState({title: text})}
+          onChangeText={(text) => this.handleInputChange('title', text)}
         />
         </View>
         <View style={styles.form}>
@@ -207,7 +216,7 @@ function IssueRow(props) {
             <View style={styles.pickerContainer}>
                 <Picker
                     selectedValue={this.state.status}
-                    onValueChange={(itemValue) => this.setState({status: itemValue})}
+                    onValueChange={(itemValue) => this.handleInputChange('status', itemValue)}
                     style={styles.picker}
                 >
                     <Picker.Item label="New" value="New" />
@@ -222,7 +231,7 @@ function IssueRow(props) {
             <TextInput
               style={styles.input}
               value={this.state.owner}
-              onChangeText={(text) => this.setState({owner: text})}
+              onChangeText={(text) => this.handleInputChange('owner', text)}
             />
         </View>
         <View style={styles.form}>
@@ -231,12 +240,12 @@ function IssueRow(props) {
               style={styles.input}
               keyboardType="numeric"
               value={this.state.effort}
-              onChangeText={(text) => this.setState({effort: text})}
+              onChangeText={(text) => this.handleInputChange('effort', text)}
             />
         </View>
         <View style={styles.form}>
             <Text style={styles.formText}>Due Date</Text>
-            <TouchableOpacity onPress={() => this.setState({ show: true })}>
+            <TouchableOpacity onPress={() => this.handleInputChange('show', true )}>
               <TextInput
                 style={styles.input}
                 value={this.state.due}
@@ -251,7 +260,7 @@ function IssueRow(props) {
               display="default"
               onChange={(event, selectedDate) => {
                 this.setState({
-                  due: selectedDate ? selectedDate.toLocaleDateString() : due,
+                  due: selectedDate ? selectedDate.toLocaleDateString('en-CA') : due,
                   show: false,
                 });
               }}
@@ -289,6 +298,7 @@ class BlackList extends React.Component {
 
         const data = await graphQLFetch(query, { name });
         this.setState({name: ''});
+        Alert.alert("Add Success.");
     /****** Q4: Code Ends here. ******/
     }
 
@@ -301,7 +311,7 @@ class BlackList extends React.Component {
                 <Text style={styles.formText}>Name</Text>
                 <TextInput
                   style={styles.input}
-                  value={this.state.effort}
+                  value={this.state.name}
                   onChangeText={(text) => this.handleChange(text)}
                 />
             </View>
